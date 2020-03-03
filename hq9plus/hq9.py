@@ -1,15 +1,23 @@
 from sys import argv
 
 class hq9_program:
-    def __init__(self, code):
+    def __init__(self, code, fullsong):
         self.code = code
         self.acc = 0
+        self.fullsong = fullsong
     def hello(self):
         print("Hello, World!", end='')
     def quine(self):
         print(self.code, end='')
     def bottles(self):
-        print("99 bottles of beer on the wall,", end='')
+        if self.fullsong:
+            for n in range(99, -1, -1):
+                if n == 0:
+                    print("No more bottles of beer on the wall, no more bottles of beer.\nGo to the sstore and buy some more, 99 bottles of beer on the wall.\n")
+                else:
+                    print("{0} bottles of beer on the wall, {0} more bottles of beer.\nTake one down and pass it around, {1} bottles of beer on the wall.\n".format(n, n-1))
+        else:
+            print("99 bottles of beer on the wall, 99 bottels of beer.", end='')
     def plus(self):
         self.acc += 1
     def run(self):
@@ -31,6 +39,12 @@ class not_an_HQ9plus_script(Exception):
 if __name__ == "__main__":
     try:
         current_file = ''
+
+        fullsong = '--full' in argv
+        if fullsong:
+            f_ix = argv.index('--full')
+            argv = argv[:f_ix] + argv[f_ix+1:]
+
         ix = argv.index('-f')
         filelist = argv[ix+1:]
         for filename in filelist:
@@ -39,7 +53,8 @@ if __name__ == "__main__":
                 raise not_an_HQ9plus_script
             with open(filename) as f:
                 code = f.read()
-            hq9_program(code).run()
+            hq9_program(code, fullsong).run()
+
     except ValueError:
         print("Invalid arguments structure: '-f' option required before file names.")
     except FileNotFoundError:
