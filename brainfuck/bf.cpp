@@ -1,4 +1,4 @@
-//This version only support Windows due to the use of conio.h.
+//This version only supports Windows due to the use of conio.h.
 //Hopefully, cross-platform support will be added in the future.
 #include <iostream>
 #include <deque>
