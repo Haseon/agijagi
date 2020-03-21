@@ -8,6 +8,7 @@
 #include <conio.h>
 #include <fstream>
 #include <sstream>
+#include <streambuf>
 
 using namespace std;
 
@@ -271,9 +272,10 @@ int main(int argc, char* argv[]) {
 	if ( open_file.is_open() ) {
 		open_file.seekg(0, ios::end);
 		int file_size = open_file.tellg();
-		our_code.resize(file_size);
+		our_code.reserve(file_size);
 		open_file.seekg(0, ios::beg);
-		open_file.read(&our_code[0], file_size);
+		our_code.assign((istreambuf_iterator<char>(open_file)),
+				 istreambuf_iterator<char>());
 	} else {
 		cout << "No such file: " << file_path << endl;
 		return 1;
